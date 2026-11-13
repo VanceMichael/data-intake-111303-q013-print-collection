@@ -1,0 +1,68 @@
+[
+  {
+    "name": "打印附表跨页重组",
+    "routes": [],
+    "input": {
+      "registration": "reg-1",
+      "revision": 2
+    },
+    "expected": {
+      "registration": "reg-1",
+      "revision": 2,
+      "ids": [
+        "l1",
+        "l2"
+      ],
+      "screenOnlyCount": 0
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "success",
+    "actions": [
+      "generate"
+    ],
+    "productNumber": 13
+  },
+  {
+    "name": "旧预览不是当前修订",
+    "routes": [],
+    "input": {
+      "registration": "reg-1",
+      "revision": 2
+    },
+    "expected": {
+      "registration": "reg-1",
+      "revision": 2,
+      "ids": [
+        "l1",
+        "l2"
+      ]
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "stale",
+    "actions": [
+      "generate"
+    ],
+    "productNumber": 13
+  },
+  {
+    "name": "生成失败不接受屏幕摘要",
+    "routes": [],
+    "input": {
+      "registration": "reg-1",
+      "revision": 2
+    },
+    "expected": {
+      "state": "unavailable",
+      "ids": []
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "failed",
+    "actions": [
+      "generate"
+    ],
+    "productNumber": 13
+  }
+]
