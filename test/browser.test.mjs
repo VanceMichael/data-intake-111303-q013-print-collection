@@ -48,3 +48,23 @@ test('浏览器门户可操作并暴露真实业务状态', { timeout: 10000 }, 
     assert.deepEqual(errors, []);
   } finally { await browser.close(); await source.close(); }
 });
+
+test('打印门户真实页面完成两轮组成并暴露打印树', { timeout: 15000 }, async () => {
+  const scenario = cases.find(item => item.productNumber === 16);
+  const source = await startSource(scenario);
+  const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
+  try {
+    const page = await browser.newPage();
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.goto(source.url + '/print');
+    await page.click('#generate');
+    // A composing pass is labelled explicitly; the final pass is `ready`.
+    await page.waitForSelector('[data-document-state="ready"]', { state: 'attached', timeout: 10000 });
+    await page.emulateMedia({ media: 'print' });
+    assert.ok(await page.locator('[data-doc-id="doc-main"] .print-page').count() >= 3);
+    assert.ok(await page.locator('[data-appendix-id="A"]').count() >= 1);
+    assert.equal(await page.locator('.print-doc.page-ready').count(), 2);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); await source.close(); }
+});

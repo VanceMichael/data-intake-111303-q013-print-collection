@@ -10,6 +10,7 @@ export function createPortal(scenario, history) {
     record: { note: '现场新备注', method: 'manual', container: 'glass' },
     duplicateBookings: 0, duplicateRecords: 0, accepted: {}, rows: [], preview: null,
     point: 'p1', revision: 1, generation: 1,
+    printGeneration: 0, printRevision: 3, printRegistration: 'reg-9',
   };
   let commitCount = 0;
   const writeJson = (response, value, status = 200) => {
@@ -28,6 +29,18 @@ export function createPortal(scenario, history) {
       if (address.pathname === '/app.mjs') {
         response.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8' });
         response.end(await readFile(new URL('../web/app.mjs', import.meta.url))); return true;
+      }
+      if (address.pathname === '/print-app.mjs') {
+        response.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8' });
+        response.end(await readFile(new URL('../web/print-app.mjs', import.meta.url))); return true;
+      }
+      if (address.pathname === '/portal-font.ttf') {
+        response.writeHead(200, { 'content-type': 'font/ttf', 'cache-control': 'public, max-age=3600' });
+        response.end(await readFile(scenario.font ?? new URL('../fixtures/portal-font.ttf', import.meta.url))); return true;
+      }
+      if (address.pathname === '/print') {
+        response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
+        response.end(await readFile(new URL('../web/print.html', import.meta.url))); return true;
       }
       if (address.pathname === '/frame') {
         const point = mode === 'conflict' ? 'p1' : address.searchParams.get('point');
@@ -92,6 +105,18 @@ export function createPortal(scenario, history) {
           if (input.point !== state.point || input.revision !== state.revision || input.generation !== state.generation) { writeJson(response, { error: '上下文冲突' }, 409); return true; }
           writeJson(response, { id: 'sample-' + state.point, point: state.point, revision: state.revision, receipt: 'download-' + state.generation }); return true;
         }
+      }
+      if (number === 16 && action === 'generate') {
+        state.printGeneration += 1;
+        writeJson(response, {
+          action: 'generate',
+          registration: state.printRegistration,
+          revision: state.printRevision,
+          generation: state.printGeneration,
+          failed: mode === 'failed',
+          fonts: mode === 'fonts',
+        });
+        return true;
       }
       if (number === 20) {
         if (action === 'upload') { state.rows = input.rows; state.preview = null; }

@@ -36,7 +36,8 @@ for (const scenario of scenarios) {
       for (const [resource, maximum] of Object.entries(scenario.limits ?? {})) assert.ok(source.history.filter(entry => entry.path.split('?')[0] === resource).length <= maximum, '超出请求额度 ' + resource);
       if (scenario.kind === 'browser') {
         for (const action of scenario.actions) assert.ok(source.portal.actions.some(entry => entry.action === action), '没有通过页面完成动作 ' + action);
-        assert.ok(source.history.some(entry => entry.path === '/portal'), '没有打开真实门户');
+        const portalPath = scenario.input?.portalPath ?? '/portal';
+        assert.ok(source.history.some(entry => entry.path === portalPath), '没有打开真实门户 ' + portalPath);
       }
       const saved = JSON.parse(await readFile(path.join(stateDir, 'result.json')));
       includes(saved, scenario.expected);

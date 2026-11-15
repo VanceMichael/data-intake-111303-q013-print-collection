@@ -64,5 +64,114 @@
       "generate"
     ],
     "productNumber": 13
+  },
+  {
+    "name": "附表跨页与跨文档归属",
+    "routes": [],
+    "input": {
+      "registration": "reg-9",
+      "revision": 3,
+      "portalPath": "/print"
+    },
+    "expected": {
+      "registration": "reg-9",
+      "revision": 3,
+      "ids": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "screenOnlyCount": 1
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "success",
+    "actions": [
+      "generate"
+    ],
+    "productNumber": 16
+  },
+  {
+    "name": "重新生成得到新修订打印文档",
+    "routes": [],
+    "input": {
+      "registration": "reg-9",
+      "revision": 3,
+      "portalPath": "/print",
+      "regenerate": true,
+      "generateSelector": "#regenerate"
+    },
+    "expected": {
+      "registration": "reg-9",
+      "revision": 3,
+      "ids": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ]
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "regenerate",
+    "actions": [
+      "generate",
+      "generate"
+    ],
+    "productNumber": 16
+  },
+  {
+    "name": "缓存预览与旧修订先出现",
+    "routes": [],
+    "input": {
+      "registration": "reg-9",
+      "revision": 3,
+      "portalPath": "/print"
+    },
+    "expected": {
+      "registration": "reg-9",
+      "revision": 3,
+      "ids": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ]
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "stale",
+    "actions": [
+      "generate"
+    ],
+    "productNumber": 16
+  },
+  {
+    "name": "附表缺失不伪称完整",
+    "routes": [],
+    "input": {
+      "registration": "reg-9",
+      "revision": 3,
+      "portalPath": "/print"
+    },
+    "expected": {
+      "registration": "reg-9",
+      "revision": 3,
+      "ids": [
+        "L1",
+        "L2",
+        "L3",
+        "L4"
+      ],
+      "screenOnlyCount": 1
+    },
+    "required": [],
+    "kind": "browser",
+    "mode": "appendix-missing",
+    "actions": [
+      "generate"
+    ],
+    "productNumber": 16
   }
 ]

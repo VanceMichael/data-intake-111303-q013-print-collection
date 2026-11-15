@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>登记站点打印件生成</title>
+<style>
+@font-face { font-family: 'PortalPrint'; src: url('/portal-font.ttf') format('truetype'); font-display: swap; }
+body { font-family: sans-serif; margin: 2rem; max-width: 1000px; }
+button, input, select { margin: .3rem; padding: .4rem; }
+pre { white-space: pre-wrap; background: #eee; padding: 1rem; }
+table { border-collapse: collapse; width: 100%; } td, th { border: 1px solid #aaa; padding: .4rem; }
+.print-doc { display: none; }
+.print-doc.page-ready { display: block; font-family: 'PortalPrint', sans-serif; }
+.print-page { margin: 0 0 1rem; }
+footer { color: #666; font-size: .8rem; }
+@media print {
+  .screen-only { display: none !important; }
+  .print-doc, .print-doc.page-ready { display: block !important; }
+  .print-page { display: block; break-after: page; }
+  .watermark { position: absolute; top: 20%; left: 20%; opacity: .2; transform: rotate(-20deg); font-size: 3rem; }
+  .void-mark { color: #b00; }
+}
+</style></head><body><h1>登记站点打印件生成</h1><div id="app"></div>
+<script type="module" src="/print-app.mjs"></script></body></html>
